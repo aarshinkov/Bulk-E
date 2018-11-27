@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{templates/errorTemplate}">
+<head>
+    <title th:text="#{title.error.ise500} + ' | ' + #{app.title}"></title>
+</head>
+<body>
+<div layout:fragment="contentDiv">
+    <h2>Internal server error!</h2>
+</div>
+</body>
+</html>

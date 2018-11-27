@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <context:component-scan base-package="com.bulke.repository"/>
+
+    <security:global-method-security pre-post-annotations="enabled"/>
+
+    <!--<security:http pattern="/test/**" security="none" />-->
+
+    <security:http use-expressions="true">
+        <security:intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/>
+
+        <!--<security:form-login/>-->
+        <security:form-login
+                login-processing-url="/authentication"
+                login-page="/login"
+                username-parameter="username"
+                password-parameter="password"
+                default-target-url="/"
+                always-use-default-target="false"
+                authentication-success-handler-ref="customAuthSuccessHandler"
+                authentication-failure-handler-ref="customAuthFailureHandler"/>
+
+        <!--<security:logout-->
+        <!--logout-success-url="/"-->
+        <!--logout-url="/logout"-->
+        <!--delete-cookies="JSESSIONID"-->
+        <!--invalidate-session="true"/>-->
+
+        <security:logout success-handler-ref="logoutSuccessHandler" invalidate-session="true"/>
+    </security:http>
+
+    <bean id="customAuthSuccessHandler" class="com.bulke.security.CustomAuthSuccessHandler"/>
+    <bean id="customAuthFailureHandler" class="com.bulke.security.CustomAuthFailureHandler"/>
+
+    <bean id="logoutSuccessHandler" class="com.bulke.security.CustomLogoutSuccessHandler">
+        <constructor-arg value="/login?logout"/>
+    </bean>
+
+    <!--<security:authentication-manager>-->
+    <!--<security:authentication-provider>-->
+    <!--<security:user-service id="userDetailsService">-->
+    <!--<security:user name="admin" password="$2a$12$q8SVUUS51j/StXmbsweczOn/ZbfLmpc2Rl9Bpgpcc0BKGPCdwHjle" authorities="ROLE_ADMIN"/>-->
+    <!--<security:user name="atanas97" password="$2a$12$vdmzUs4s5qceGCkgLFG06e0E82HXGji/uBzucshZAIK0MdEBuh5eS" authorities="ROLE_USER"/>-->
+    <!--</security:user-service>-->
+    <!--<security:password-encoder hash="bcrypt"/>-->
+    <!--</security:authentication-provider>-->
+    <!--</security:authentication-manager>-->
+
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="userDetailsService">
+            <security:password-encoder ref="passwordEncoder"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+        <constructor-arg value="12"/>
+    </bean>
+
+    <bean id="userDetailsService" class="com.bulke.security.UserDetailsServiceImpl"/>
+</beans>

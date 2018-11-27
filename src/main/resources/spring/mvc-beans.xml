@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--<bean id="versionBean" class="com.bulke.beans.VersionBean"/>-->
+    <!--<bean id="messagesBean" class="com.bulke.beans.MessagesBean"/>-->
+    <bean id="errorsBean" class="com.bulke.beans.ErrorsBean"/>
+    <bean id="configBean" class="com.bulke.beans.ConfigurationBean"/>
+    <!--<bean id="usersBean" class="com.bulke.beans.UsersBean"/>-->
+    <!--<bean id="settingsBean" class="com.bulke.beans.SettingsBean"/>-->
+</beans>
